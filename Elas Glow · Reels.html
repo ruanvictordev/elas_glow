@@ -1,0 +1,769 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Elas Glow · Reels</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,400&family=Hanken+Grotesk:wght@400;500;600&display=swap">
+<style>
+/* Layout: editorial single column — black hero band, calendar strip, one "call sheet" per Reels. Monochrome by brief. */
+:root {
+  --bg: #fbfbfa; --fg: #0d0d0d; --muted: #5b5b58; --line: #d9d9d5; --panel: #f0f0ed; --inv-bg: #0d0d0d; --inv-fg: #fbfbfa;
+  --display: 'Playfair Display', 'Times New Roman', Georgia, serif;
+  --body: 'Hanken Grotesk', 'Helvetica Neue', Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0f0f0e; --fg: #f2f2ef; --muted: #a3a39e; --line: #2f2f2c; --panel: #1a1a18; --inv-bg: #f2f2ef; --inv-fg: #0f0f0e; color-scheme: dark; } }
+:root[data-theme="dark"] {
+  --bg: #0f0f0e; --fg: #f2f2ef; --muted: #a3a39e; --line: #2f2f2c; --panel: #1a1a18; --inv-bg: #f2f2ef; --inv-fg: #0f0f0e; color-scheme: dark; }
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--fg); font: 16px/1.6 var(--body); }
+.wrap { max-width: 980px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+h1, h2, h3 { font-family: var(--display); text-wrap: balance; margin: 0; line-height: 1.15; }
+.lbl, .eyebrow { font-size: 11px; letter-spacing: .16em; text-transform: uppercase; font-weight: 600; color: var(--muted); }
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--fg); outline-offset: 3px; }
+
+.hero { background: var(--inv-bg); color: var(--inv-fg); }
+.hero .wrap { padding-block: 56px 48px; display: grid; gap: 18px; }
+.hero .eyebrow { color: inherit; opacity: .7; }
+.hero h1 { font-size: clamp(44px, 9vw, 92px); font-weight: 700; letter-spacing: -.01em; }
+.hero h1 em { font-weight: 400; }
+.hero p.lead { max-width: 60ch; font-size: 18px; margin: 0; opacity: .9; }
+.facts { display: flex; flex-wrap: wrap; gap: 10px 28px; margin-top: 8px; font-size: 14px; }
+.facts b { font-family: var(--display); font-size: 24px; display: block; line-height: 1.1; }
+
+section { padding-block: 48px; border-bottom: 1px solid var(--line); }
+section > .wrap > h2 { font-size: clamp(28px, 5vw, 40px); margin-bottom: 8px; }
+.sub { color: var(--muted); max-width: 62ch; margin: 0 0 24px; }
+
+.formats { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 0; border-top: 1px solid var(--fg); }
+.formats div { padding: 18px 18px 18px 0; border-bottom: 1px solid var(--line); min-width: 0; }
+.formats h3 { font-size: 20px; margin-bottom: 6px; }
+.formats p { margin: 0; color: var(--muted); font-size: 15px; }
+.formats .r { font-variant-numeric: tabular-nums; font-size: 13px; color: var(--fg); margin-top: 8px; font-weight: 600; }
+.legend { margin-top: 20px; font-size: 15px; max-width: 70ch; }
+.legend code { font-family: var(--body); font-weight: 600; font-size: 12px; letter-spacing: .12em; border: 1px solid var(--fg); padding: 1px 6px; }
+
+.filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+.filters button { font: 600 13px var(--body); letter-spacing: .06em; padding: 8px 14px; border: 1px solid var(--fg); background: transparent; color: var(--fg); cursor: pointer; }
+.filters button[aria-pressed="true"] { background: var(--fg); color: var(--bg); }
+.cal { display: grid; border-top: 1px solid var(--fg); }
+.cal-item { display: grid; grid-template-columns: 120px 52px 1fr auto; gap: 12px; align-items: baseline; padding: 14px 0; border-bottom: 1px solid var(--line); text-decoration: none; }
+.cal-item:hover .cal-t { text-decoration: underline; }
+.cal-d { font-size: 14px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.cal-n { font-family: var(--display); font-weight: 700; font-variant-numeric: tabular-nums; }
+.cal-t { min-width: 0; }
+.cal-s { font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); text-align: right; }
+
+.reels { display: grid; gap: 56px; }
+.reel { scroll-margin-top: 24px; min-width: 0; }
+.reel-head { display: flex; gap: 18px; align-items: flex-start; border-bottom: 3px solid var(--fg); padding-bottom: 14px; }
+.num { background: var(--fg); color: var(--bg); font-family: var(--display); font-weight: 700; font-size: 30px; padding: 6px 14px; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.head-txt { min-width: 0; }
+.reel h3 { font-size: clamp(22px, 3.6vw, 30px); margin-top: 4px; }
+.fmt { margin: 4px 0 0; font-style: italic; font-family: var(--display); color: var(--muted); }
+.meta { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; padding-block: 16px; }
+.meta p { margin: 4px 0 0; font-size: 15px; }
+h4 { font: 600 11px var(--body); letter-spacing: .16em; text-transform: uppercase; margin: 8px 0 0; padding-bottom: 8px; border-bottom: 1px solid var(--fg); }
+.beats { list-style: none; margin: 0; padding: 0; }
+.beat { display: grid; grid-template-columns: 64px 80px minmax(0, 1.6fr) minmax(0, 1fr); gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--line); align-items: baseline; }
+.beat .t { font-weight: 600; font-variant-numeric: tabular-nums; font-size: 14px; }
+.beat .who { font-size: 11px; letter-spacing: .14em; font-weight: 600; }
+.beat .fala { margin: 0; font-family: var(--display); font-size: 19px; line-height: 1.4; }
+.beat .cena { margin: 0; font-size: 13px; color: var(--muted); }
+details { border-bottom: 1px solid var(--line); }
+summary { cursor: pointer; padding: 14px 0; font-weight: 600; font-size: 14px; letter-spacing: .04em; }
+.tips { margin: 0 0 16px; padding-left: 20px; font-size: 15px; }
+.tips li { margin: 4px 0; }
+.caption { background: var(--panel); padding: 18px 20px; margin-top: 20px; }
+.cap-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+.caption p { margin: 10px 0 0; font-size: 15px; max-width: 70ch; }
+.caption .tags { font-weight: 600; word-break: break-word; }
+.caption .kw { font-size: 13px; color: var(--muted); }
+.copy { font: 600 12px var(--body); letter-spacing: .08em; text-transform: uppercase; padding: 8px 12px; border: 1px solid var(--fg); background: var(--fg); color: var(--bg); cursor: pointer; }
+.copy.ok { background: transparent; color: var(--fg); }
+
+/* Papo de Elas */
+.feature { background: var(--inv-bg); color: var(--inv-fg); padding: 24px; margin: 8px 0 28px; }
+.feature .eyebrow { color: inherit; opacity: .7; }
+.feature h3 { font-size: clamp(28px, 5vw, 40px); font-style: italic; font-weight: 500; margin: 4px 0 10px; }
+.feature p { margin: 0; max-width: 68ch; }
+.feature ul { margin: 14px 0 0; padding-left: 20px; max-width: 68ch; }
+.feature li { margin: 4px 0; }
+.badge { display: inline-block; margin-top: 6px; font-size: 11px; letter-spacing: .16em; text-transform: uppercase; font-weight: 600; border: 1px solid var(--fg); padding: 2px 8px; }
+.reel.papo .reel-head { border-bottom-style: double; border-bottom-width: 6px; }
+.reel.papo .num { background: transparent; color: var(--fg); border: 2px solid var(--fg); }
+.cal-item.papo .cal-t { font-family: var(--display); font-style: italic; font-size: 18px; }
+.guide { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 0 32px; }
+.guide div { padding: 16px 0; border-top: 1px solid var(--line); min-width: 0; }
+.guide h3 { font-size: 19px; margin-bottom: 4px; }
+.guide p { margin: 0; color: var(--muted); font-size: 15px; }
+.checks { list-style: none; padding: 0; margin: 0; display: grid; gap: 2px; }
+.checks li { display: flex; gap: 12px; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--line); }
+.checks input { width: 18px; height: 18px; accent-color: var(--fg); flex: none; }
+.checks input:checked + label { color: var(--muted); text-decoration: line-through; }
+.reset { margin-top: 14px; font: 600 12px var(--body); letter-spacing: .08em; text-transform: uppercase; background: none; border: 1px solid var(--line); color: var(--muted); padding: 6px 10px; cursor: pointer; }
+.note { font-size: 14px; color: var(--muted); margin-top: 18px; max-width: 70ch; }
+
+footer { background: var(--inv-bg); color: var(--inv-fg); }
+footer .wrap { padding-block: 28px calc(28px + env(safe-area-inset-bottom, 0px)); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; }
+
+@media (max-width: 680px) {
+  .meta { grid-template-columns: 1fr; gap: 12px; }
+  .beat { grid-template-columns: 56px 1fr; gap: 4px 12px; }
+  .beat .fala, .beat .cena { grid-column: 1 / -1; }
+  .cal-item { grid-template-columns: 44px 1fr; }
+  .cal-d { grid-column: 2; grid-row: 2; }
+  .cal-s { display: none; }
+  .cal-n { grid-row: 1; }
+}
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+</style>
+
+<header class="hero">
+  <div class="wrap">
+    <p class="eyebrow">Planejamento de conteúdo · Instagram · @elas_glow</p>
+    <h1>Elas Glow</h1>
+    <p class="lead">15 Reels em que a Elaine e a Luana falam direto com o público: sobre os serviços, a rotina e, toda quinta, sobre a história de empreender que levou a Elas Glow até aqui.</p>
+    <div class="facts">
+      <div><b>15</b>Reels no mês</div>
+      <div><b>4</b>episódios do Papo de Elas</div>
+      <div><b>10/11 – 04/12</b>novembro e dezembro de 2026</div>
+    </div>
+  </div>
+</header>
+
+<section id="estrategia">
+  <div class="wrap">
+    <h2>Estratégia</h2>
+    <p class="sub">O público se conecta com pessoas, não com logos. Em todos os 15 Reels a Elaine e a Luana aparecem e falam. O mês combina quatro frentes, e o quadro semanal Papo de Elas é o centro de tudo.</p>
+    <div class="feature">
+      <p class="eyebrow">Quadro semanal · toda quinta</p>
+      <h3>Papo de Elas</h3>
+      <p>Um bate-papo entre mãe e filha sobre o universo delas e o empreendedorismo: como começaram, os erros, os medos, as decisões e o que fizeram para chegar onde estão. Sempre o mesmo cenário (duas cadeiras, café, luz de janela) e a mesma capa, para o público reconhecer o quadro. Os roteiros trazem perguntas-guia e trechos entre colchetes para elas contarem a história real, sem nada inventado.</p>
+      <ul>
+        <li>Durante a semana, abram nos Stories a caixinha <b>“Pergunte às Elas”</b> para coletar perguntas do próximo episódio.</li>
+        <li>Gravem uma conversa de 5 a 10 minutos e usem o melhor corte de 45–60 segundos no Reels.</li>
+        <li>A versão longa pode ir para os Stories ou para o YouTube.</li>
+      </ul>
+    </div>
+    <div class="formats">
+      <div><h3>Papo de Elas</h3><p>Bate-papo semanal sobre empreendedorismo e a história delas.</p><p class="r">Quintas · #02 · #06 · #10 · #14</p></div>
+      <div><h3>Serviço com a voz delas</h3><p>Elas explicam, respondem dúvidas e mostram cada serviço.</p><p class="r">Terças e sextas · #03 · #05 · #07 · #09 · #11 · #13</p></div>
+      <div><h3>Conexão</h3><p>Rotina, bastidores, brincadeiras de mãe e filha e histórias de clientes.</p><p class="r">Domingos · #01 · #04 · #08 · #12</p></div>
+      <div><h3>Conversão</h3><p>Convite pessoal das duas para agendar as festas de fim de ano.</p><p class="r">#15</p></div>
+    </div>
+    <p class="legend">Nos roteiros, <code>ELAINE</code> e <code>LUANA</code> indicam a fala de cada uma. <code>QUEM FAZ</code> é a especialista daquele serviço: escolham entre as duas conforme quem faz o atendimento. O termo “pestanas” foi mantido nas legendas e hashtags porque é como as clientes em Portugal procuram o serviço.</p>
+  </div>
+</section>
+
+<section id="calendario">
+  <div class="wrap">
+    <h2>Calendário</h2>
+    <p class="sub">Terça, quinta, sexta e domingo. Toque em um Reels para ir direto ao roteiro.</p>
+    <div class="filters" role="group" aria-label="Filtrar o calendário">
+      <button type="button" id="f-all" data-sem="all" aria-pressed="true">Todas</button>
+      <button type="button" id="f-1" data-sem="1" aria-pressed="false">Semana 1</button>
+      <button type="button" id="f-2" data-sem="2" aria-pressed="false">Semana 2</button>
+      <button type="button" id="f-3" data-sem="3" aria-pressed="false">Semana 3</button>
+      <button type="button" id="f-4" data-sem="4" aria-pressed="false">Semana 4</button>
+      <button type="button" id="f-papo" data-sem="papo" aria-pressed="false">Papo de Elas</button>
+    </div>
+    <nav class="cal"><a class="cal-item" href="#reel-01" data-sem="1" data-papo="0"><span class="cal-d">Terça, 10/11</span><span class="cal-n">#01</span><span class="cal-t">Prazer, somos a Elaine e a Luana</span><span class="cal-s">Apresentação</span></a><a class="cal-item papo" href="#reel-02" data-sem="1" data-papo="1"><span class="cal-d">Quinta, 12/11</span><span class="cal-n">#02</span><span class="cal-t">Como tudo começou: de mãe e filha a sócias</span><span class="cal-s">Papo de Elas · Ep. 01</span></a><a class="cal-item" href="#reel-03" data-sem="1" data-papo="0"><span class="cal-d">Sexta, 13/11</span><span class="cal-n">#03</span><span class="cal-t">As 3 perguntas que mais escutamos sobre extensão de pestanas</span><span class="cal-s">Pestanas</span></a><a class="cal-item" href="#reel-04" data-sem="1" data-papo="0"><span class="cal-d">Domingo, 15/11</span><span class="cal-n">#04</span><span class="cal-t">Um dia com a gente na Elas Glow</span><span class="cal-s">Bastidores</span></a><a class="cal-item" href="#reel-05" data-sem="2" data-papo="0"><span class="cal-d">Terça, 17/11</span><span class="cal-n">#05</span><span class="cal-t">Por que agora é a melhor época para começar o laser</span><span class="cal-s">Laser</span></a><a class="cal-item papo" href="#reel-06" data-sem="2" data-papo="1"><span class="cal-d">Quinta, 19/11</span><span class="cal-n">#06</span><span class="cal-t">Os erros do começo e o que eles ensinaram</span><span class="cal-s">Papo de Elas · Ep. 02</span></a><a class="cal-item" href="#reel-07" data-sem="2" data-papo="0"><span class="cal-d">Sexta, 20/11</span><span class="cal-n">#07</span><span class="cal-t">Mito ou verdade: bronze com fita</span><span class="cal-s">Bronze com fita</span></a><a class="cal-item" href="#reel-08" data-sem="2" data-papo="0"><span class="cal-d">Domingo, 22/11</span><span class="cal-n">#08</span><span class="cal-t">Mãe x filha: quem é quem na Elas Glow?</span><span class="cal-s">Mãe x filha</span></a><a class="cal-item" href="#reel-09" data-sem="3" data-papo="0"><span class="cal-d">Terça, 24/11</span><span class="cal-n">#09</span><span class="cal-t">3 sinais de que sua pele precisa de uma limpeza</span><span class="cal-s">Pele</span></a><a class="cal-item papo" href="#reel-10" data-sem="3" data-papo="1"><span class="cal-d">Quinta, 26/11</span><span class="cal-n">#10</span><span class="cal-t">Ser pioneiras: como foi apostar no bronze com fita</span><span class="cal-s">Papo de Elas · Ep. 03</span></a><a class="cal-item" href="#reel-11" data-sem="3" data-papo="0"><span class="cal-d">Sexta, 27/11</span><span class="cal-n">#11</span><span class="cal-t">Respondemos às suas perguntas sobre sobrancelhas</span><span class="cal-s">Sobrancelhas</span></a><a class="cal-item" href="#reel-12" data-sem="3" data-papo="0"><span class="cal-d">Domingo, 29/11</span><span class="cal-n">#12</span><span class="cal-t">A cliente que mais marcou a nossa história</span><span class="cal-s">Clientes</span></a><a class="cal-item" href="#reel-13" data-sem="4" data-papo="0"><span class="cal-d">Terça, 01/12</span><span class="cal-n">#13</span><span class="cal-t">Vem conhecer a Elas Glow com a gente</span><span class="cal-s">Todos os serviços</span></a><a class="cal-item papo" href="#reel-14" data-sem="4" data-papo="1"><span class="cal-d">Quinta, 03/12</span><span class="cal-n">#14</span><span class="cal-t">De esteticistas a formadoras: por que criamos o curso</span><span class="cal-s">Papo de Elas · Ep. 04</span></a><a class="cal-item" href="#reel-15" data-sem="4" data-papo="0"><span class="cal-d">Sexta, 04/12</span><span class="cal-n">#15</span><span class="cal-t">Natal e Réveillon: os horários estão acabando</span><span class="cal-s">Agenda de fim de ano</span></a></nav>
+  </div>
+</section>
+
+<section id="roteiros">
+  <div class="wrap">
+    <h2>Roteiros</h2>
+    <p class="sub">Leiam o roteiro, entendam a ideia e falem do jeito de vocês. O texto é um guia, não algo para decorar.</p>
+    <div class="reels">
+<article class="reel" id="reel-01" data-sem="1" data-papo="0">
+  <header class="reel-head">
+    <div class="num">#01</div>
+    <div class="head-txt">
+      <p class="eyebrow">Semana 1 · Terça, 10/11 · Apresentação</p>
+      <h3>Prazer, somos a Elaine e a Luana</h3>
+      <p class="fmt">Dueto: as duas falando para a câmera</p>
+    </div>
+  </header>
+  <div class="meta">
+    <div><span class="lbl">Objetivo</span><p>Abrir o mês mostrando quem está por trás da Elas Glow e criar a primeira conexão.</p></div>
+    <div><span class="lbl">Onde gravar</span><p>Lado a lado, de jaleco, no espaço. Plano médio, celular no tripé na altura dos olhos.</p></div>
+  </div>
+  <h4>Roteiro de fala</h4>
+  <ol class="beats"><li class="beat"><span class="t">0–3s</span><span class="who">LUANA</span><p class="fala">“Se você segue a Elas Glow e ainda não conhece a gente, esse vídeo é pra você.”</p><p class="cena">Texto: PRAZER, SOMOS A ELAS GLOW</p></li><li class="beat"><span class="t">3–7s</span><span class="who">ELAINE</span><p class="fala">“Eu sou a Elaine…”</p><p class="cena">Plano na Elaine</p></li><li class="beat"><span class="t">7–11s</span><span class="who">LUANA</span><p class="fala">“…e eu sou a Luana. A gente é mãe e filha!”</p><p class="cena">Plano na Luana. Texto: MÃE E FILHA 🤍</p></li><li class="beat"><span class="t">11–19s</span><span class="who">ELAINE</span><p class="fala">“A partir de agora você vai ver muito mais a gente por aqui, contando nossa rotina, nossa história e tirando suas dúvidas.”</p><p class="cena">Cenas rápidas do espaço</p></li><li class="beat"><span class="t">19–26s</span><span class="who">LUANA</span><p class="fala">“E toda quinta tem o Papo de Elas, um bate-papo sobre o que a gente viveu para chegar até aqui.”</p><p class="cena">Texto: TODA QUINTA • PAPO DE ELAS</p></li><li class="beat"><span class="t">26–30s</span><span class="who">AS DUAS</span><p class="fala">“Segue a gente e comenta: o que você quer saber sobre nós?”</p><p class="cena">As duas sorrindo</p></li></ol>
+  <details>
+    <summary>Dicas de gravação</summary>
+    <ul class="tips"><li>Não decorem palavra por palavra: entendam a ideia e falem do jeito de vocês.</li><li>Gravem uma frase de cada vez e juntem na edição.</li><li>Olhem para a lente, não para a tela: parece que estão falando com a seguidora.</li><li>Fixem este Reels no topo do perfil.</li></ul>
+  </details>
+  <div class="caption">
+    <div class="cap-top"><span class="lbl">Legenda com SEO</span>
+      <button type="button" class="copy" id="copy-01" data-text="Clínica de estética em Pombal feita por mãe e filha 🤍
+
+Somos a Elaine e a Luana, e a partir de agora você vai ver muito mais a gente por aqui: nossa rotina, nossa história e as respostas para as suas dúvidas. E toda quinta tem o Papo de Elas, nosso bate-papo sobre empreender e tudo o que vivemos até aqui.
+
+O que você quer saber sobre nós? Deixa nos comentários 👇
+
+#esteticapombal #pombal #elasglow #maeefilha #empreendedorismofeminino">Copiar legenda</button></div>
+    <p>Clínica de estética em Pombal feita por mãe e filha 🤍<br><br>Somos a Elaine e a Luana, e a partir de agora você vai ver muito mais a gente por aqui: nossa rotina, nossa história e as respostas para as suas dúvidas. E toda quinta tem o Papo de Elas, nosso bate-papo sobre empreender e tudo o que vivemos até aqui.<br><br>O que você quer saber sobre nós? Deixa nos comentários 👇</p>
+    <p class="tags">#esteticapombal #pombal #elasglow #maeefilha #empreendedorismofeminino</p>
+    <p class="kw"><span class="lbl">Palavras-chave</span> clínica de estética Pombal, Elas Glow, mãe e filha empreendedoras</p>
+  </div>
+</article>
+<article class="reel papo" id="reel-02" data-sem="1" data-papo="1">
+  <header class="reel-head">
+    <div class="num">#02</div>
+    <div class="head-txt">
+      <p class="eyebrow">Semana 1 · Quinta, 12/11 · Papo de Elas · Ep. 01</p><span class="badge">Papo de Elas</span>
+      <h3>Como tudo começou: de mãe e filha a sócias</h3>
+      <p class="fmt">Bate-papo sentadas, uma pergunta na tela e as duas respondendo</p>
+    </div>
+  </header>
+  <div class="meta">
+    <div><span class="lbl">Objetivo</span><p>Contar a origem da Elas Glow com a voz delas e gerar identificação com quem sonha em empreender.</p></div>
+    <div><span class="lbl">Onde gravar</span><p>Cenário fixo do quadro: duas cadeiras ou sofá, café na mesa, luz de janela. Sempre o mesmo lugar.</p></div>
+  </div>
+  <h4>Roteiro de fala</h4>
+  <ol class="beats"><li class="beat"><span class="t">0–3s</span><span class="who">LUANA</span><p class="fala">“Muita gente pergunta como a Elas Glow nasceu. Hoje a gente conta.”</p><p class="cena">Texto: PAPO DE ELAS • EP. 01</p></li><li class="beat"><span class="t">3–15s</span><span class="who">ELAINE</span><p class="fala">“Tudo começou quando [contem o momento real: o primeiro curso, a primeira cliente, a decisão de trabalhar juntas].”</p><p class="cena">Pergunta na tela: COMO TUDO COMEÇOU?</p></li><li class="beat"><span class="t">15–28s</span><span class="who">LUANA</span><p class="fala">“O mais difícil no começo foi [ex.: conquistar as primeiras clientes, investir sem saber se ia dar certo].”</p><p class="cena">Foto antiga ou do início, se tiverem</p></li><li class="beat"><span class="t">28–40s</span><span class="who">ELAINE</span><p class="fala">“E trabalhar com a filha é [contem com sinceridade: o lado bom e o desafio].”</p><p class="cena">As duas rindo</p></li><li class="beat"><span class="t">40–50s</span><span class="who">LUANA</span><p class="fala">“Se você está com medo de começar, a gente entende. A gente também teve.”</p><p class="cena">Close na Luana</p></li><li class="beat"><span class="t">50–55s</span><span class="who">AS DUAS</span><p class="fala">“Quinta que vem tem mais. Deixa sua pergunta pro próximo Papo!”</p><p class="cena">Texto: MANDE SUA PERGUNTA</p></li></ol>
+  <details>
+    <summary>Dicas de gravação</summary>
+    <ul class="tips"><li>Os trechos entre colchetes são para vocês preencherem com a história real. Não inventem nada.</li><li>Gravem uma conversa longa (5 a 10 minutos) e cortem os melhores 45–60 segundos.</li><li>Usem sempre o mesmo cenário e a mesma capa: o público reconhece o quadro.</li><li>Publiquem o vídeo inteiro nos Stories ou no YouTube, se quiserem, e o corte no Reels.</li></ul>
+  </details>
+  <div class="caption">
+    <div class="cap-top"><span class="lbl">Legenda com SEO</span>
+      <button type="button" class="copy" id="copy-02" data-text="Papo de Elas • Ep. 01: como a Elas Glow começou ☕
+
+Toda empresa tem um começo, e o nosso foi feito de coragem, medo e muita vontade de dar certo. Neste primeiro episódio a gente conta como mãe e filha viraram sócias e abriram um espaço de estética em Pombal.
+
+Você também sonha em empreender? Conta pra gente 👇
+Toda quinta tem Papo de Elas.
+
+#papodeelas #empreendedorismofeminino #maeefilha #esteticapombal #elasglow">Copiar legenda</button></div>
+    <p>Papo de Elas • Ep. 01: como a Elas Glow começou ☕<br><br>Toda empresa tem um começo, e o nosso foi feito de coragem, medo e muita vontade de dar certo. Neste primeiro episódio a gente conta como mãe e filha viraram sócias e abriram um espaço de estética em Pombal.<br><br>Você também sonha em empreender? Conta pra gente 👇<br>Toda quinta tem Papo de Elas.</p>
+    <p class="tags">#papodeelas #empreendedorismofeminino #maeefilha #esteticapombal #elasglow</p>
+    <p class="kw"><span class="lbl">Palavras-chave</span> empreendedorismo feminino, mãe e filha sócias, estética Pombal</p>
+  </div>
+</article>
+<article class="reel" id="reel-03" data-sem="1" data-papo="0">
+  <header class="reel-head">
+    <div class="num">#03</div>
+    <div class="head-txt">
+      <p class="eyebrow">Semana 1 · Sexta, 13/11 · Pestanas</p>
+      <h3>As 3 perguntas que mais escutamos sobre extensão de pestanas</h3>
+      <p class="fmt">Perguntas e respostas para a câmera</p>
+    </div>
+  </header>
+  <div class="meta">
+    <div><span class="lbl">Objetivo</span><p>Tirar as dúvidas que impedem o agendamento, com a especialista falando direto com a cliente.</p></div>
+    <div><span class="lbl">Onde gravar</span><p>Ao lado da maca, com o material de pestanas aparecendo. Plano médio.</p></div>
+  </div>
+  <h4>Roteiro de fala</h4>
+  <ol class="beats"><li class="beat"><span class="t">0–3s</span><span class="who">QUEM FAZ</span><p class="fala">“Essas são as 3 perguntas que eu mais escuto sobre extensão de pestanas.”</p><p class="cena">Texto: 3 DÚVIDAS SOBRE PESTANAS</p></li><li class="beat"><span class="t">3–11s</span><span class="who">QUEM FAZ</span><p class="fala">“Primeira: estraga os fios naturais? Não, quando é bem aplicada e com o fio certo para as suas pestanas.”</p><p class="cena">Close da aplicação fio a fio</p></li><li class="beat"><span class="t">11–18s</span><span class="who">QUEM FAZ</span><p class="fala">“Segunda: quanto tempo dura? Com os cuidados certos e a manutenção em dia, você fica sempre com o olhar bonito.”</p><p class="cena">Resultado em close</p></li><li class="beat"><span class="t">18–25s</span><span class="who">QUEM FAZ</span><p class="fala">“Terceira: posso molhar? Pode, só evite nas primeiras 24 horas.”</p><p class="cena">Texto: 24H SEM MOLHAR</p></li><li class="beat"><span class="t">25–30s</span><span class="who">QUEM FAZ</span><p class="fala">“Ficou alguma dúvida? Deixa aqui que eu respondo.”</p><p class="cena">Sorriso para a câmera</p></li></ol>
+  <details>
+    <summary>Dicas de gravação</summary>
+    <ul class="tips"><li>Contem nos dedos (1, 2, 3): ajuda quem assiste a acompanhar.</li><li>Tom de conversa, como se estivessem explicando para uma cliente na maca.</li><li>Respondam os comentários em vídeo: vira pauta para os próximos Reels.</li><li>Se quiserem, digam o intervalo de manutenção que vocês usam.</li></ul>
+  </details>
+  <div class="caption">
+    <div class="cap-top"><span class="lbl">Legenda com SEO</span>
+      <button type="button" class="copy" id="copy-03" data-text="Extensão de pestanas em Pombal: respondemos às 3 dúvidas mais comuns 👁️
+
+Estraga os fios naturais? Quanto tempo dura? Posso molhar? A gente responde tudo neste vídeo para você agendar sem medo.
+
+Tem outra dúvida? Deixa nos comentários que a gente responde 👇
+📲 Agende pelo link da bio.
+
+#pestanaspombal #extensaodepestanas #lashpombal #pestanas #esteticapombal">Copiar legenda</button></div>
+    <p>Extensão de pestanas em Pombal: respondemos às 3 dúvidas mais comuns 👁️<br><br>Estraga os fios naturais? Quanto tempo dura? Posso molhar? A gente responde tudo neste vídeo para você agendar sem medo.<br><br>Tem outra dúvida? Deixa nos comentários que a gente responde 👇<br>📲 Agende pelo link da bio.</p>
+    <p class="tags">#pestanaspombal #extensaodepestanas #lashpombal #pestanas #esteticapombal</p>
+    <p class="kw"><span class="lbl">Palavras-chave</span> extensão de pestanas Pombal, extensão de pestanas estraga</p>
+  </div>
+</article>
+<article class="reel" id="reel-04" data-sem="1" data-papo="0">
+  <header class="reel-head">
+    <div class="num">#04</div>
+    <div class="head-txt">
+      <p class="eyebrow">Semana 1 · Domingo, 15/11 · Bastidores</p>
+      <h3>Um dia com a gente na Elas Glow</h3>
+      <p class="fmt">Vlog falado: um dia de trabalho com elas</p>
+    </div>
+  </header>
+  <div class="meta">
+    <div><span class="lbl">Objetivo</span><p>Mostrar a rotina real das duas, gerando proximidade (o formato com mais engajamento do perfil).</p></div>
+    <div><span class="lbl">Onde gravar</span><p>Vários momentos do dia, celular na mão ou no tripé. Falas curtas olhando para a câmera.</p></div>
+  </div>
+  <h4>Roteiro de fala</h4>
+  <ol class="beats"><li class="beat"><span class="t">0–3s</span><span class="who">ELAINE</span><p class="fala">“Vem passar um dia de trabalho com a gente?”</p><p class="cena">Texto: UM DIA NA ELAS GLOW</p></li><li class="beat"><span class="t">3–8s</span><span class="who">LUANA</span><p class="fala">“A gente chega cedo, arruma tudo e confere a agenda do dia.”</p><p class="cena">Abrindo o espaço, café, agenda</p></li><li class="beat"><span class="t">8–15s</span><span class="who">ELAINE</span><p class="fala">“Entre um atendimento e outro a gente se olha e pensa: deu certo.”</p><p class="cena">Cortes rápidos de atendimentos</p></li><li class="beat"><span class="t">15–22s</span><span class="who">LUANA</span><p class="fala">“O almoço às vezes é corrido, mas é o nosso momento de conversar.”</p><p class="cena">As duas almoçando ou tomando café</p></li><li class="beat"><span class="t">22–28s</span><span class="who">ELAINE</span><p class="fala">“E no fim do dia, o cansaço vem junto com a sensação de dever cumprido.”</p><p class="cena">Fechando o espaço</p></li><li class="beat"><span class="t">28–32s</span><span class="who">AS DUAS</span><p class="fala">“Gostou de ver? Comenta que a gente faz mais!”</p><p class="cena">As duas acenando</p></li></ol>
+  <details>
+    <summary>Dicas de gravação</summary>
+    <ul class="tips"><li>Gravem pequenos trechos ao longo de um dia normal; não precisa ser perfeito.</li><li>Usem áudio em alta baixinho por baixo das falas.</li><li>Mostrem momentos espontâneos das duas: é o que gera conexão.</li><li>Não mostrem clientes sem autorização.</li></ul>
+  </details>
+  <div class="caption">
+    <div class="cap-top"><span class="lbl">Legenda com SEO</span>
+      <button type="button" class="copy" id="copy-04" data-text="Um dia de trabalho com a gente na Elas Glow, em Pombal ✨
+
+Café, agenda cheia, atendimentos com carinho e aquela conversa de mãe e filha entre uma cliente e outra. Essa é a nossa rotina, e a gente ama dividir ela com você.
+
+Quer mais vídeos assim? Comenta EU QUERO 👇
+
+#rotina #bastidores #esteticapombal #maeefilha #elasglow">Copiar legenda</button></div>
+    <p>Um dia de trabalho com a gente na Elas Glow, em Pombal ✨<br><br>Café, agenda cheia, atendimentos com carinho e aquela conversa de mãe e filha entre uma cliente e outra. Essa é a nossa rotina, e a gente ama dividir ela com você.<br><br>Quer mais vídeos assim? Comenta EU QUERO 👇</p>
+    <p class="tags">#rotina #bastidores #esteticapombal #maeefilha #elasglow</p>
+    <p class="kw"><span class="lbl">Palavras-chave</span> rotina esteticista, bastidores clínica de estética Pombal</p>
+  </div>
+</article>
+<article class="reel" id="reel-05" data-sem="2" data-papo="0">
+  <header class="reel-head">
+    <div class="num">#05</div>
+    <div class="head-txt">
+      <p class="eyebrow">Semana 2 · Terça, 17/11 · Laser</p>
+      <h3>Por que agora é a melhor época para começar o laser</h3>
+      <p class="fmt">Explicação para a câmera</p>
+    </div>
+  </header>
+  <div class="meta">
+    <div><span class="lbl">Objetivo</span><p>Apresentar o laser com a especialista explicando, aproveitando a época do ano.</p></div>
+    <div><span class="lbl">Onde gravar</span><p>Ao lado do aparelho de laser. Plano médio, com o aparelho aparecendo.</p></div>
+  </div>
+  <h4>Roteiro de fala</h4>
+  <ol class="beats"><li class="beat"><span class="t">0–3s</span><span class="who">QUEM FAZ</span><p class="fala">“Quer chegar no verão sem pelos? Então tem que começar agora.”</p><p class="cena">Texto: VERÃO SEM PELOS? COMECE AGORA</p></li><li class="beat"><span class="t">3–11s</span><span class="who">QUEM FAZ</span><p class="fala">“O laser não é uma sessão só. São várias, com intervalo entre elas, por isso precisa de tempo.”</p><p class="cena">Mostra o aparelho</p></li><li class="beat"><span class="t">11–19s</span><span class="who">QUEM FAZ</span><p class="fala">“E no inverno a pele pega menos sol, o que deixa essa época ideal para o tratamento.”</p><p class="cena">Aplicação em uma área do corpo (com autorização)</p></li><li class="beat"><span class="t">19–25s</span><span class="who">QUEM FAZ</span><p class="fala">“Na primeira visita a gente faz uma avaliação para montar o melhor plano para você.”</p><p class="cena">Texto: AVALIAÇÃO PERSONALIZADA</p></li><li class="beat"><span class="t">25–30s</span><span class="who">QUEM FAZ</span><p class="fala">“Agende sua avaliação pelo link da bio e chegue no verão pronta.”</p><p class="cena">Sorriso + apontar para cima</p></li></ol>
+  <details>
+    <summary>Dicas de gravação</summary>
+    <ul class="tips"><li>Falem com calma e segurança: é um serviço em que a cliente procura confiança.</li><li>Mostrem óculos de proteção e gel: reforça o cuidado sem precisar explicar.</li><li>Se tiverem um número de sessões padrão, falem no vídeo.</li><li>Confirmem se o laser do espaço é depilação; se for outro tipo, ajustem o texto.</li></ul>
+  </details>
+  <div class="caption">
+    <div class="cap-top"><span class="lbl">Legenda com SEO</span>
+      <button type="button" class="copy" id="copy-05" data-text="Depilação a laser em Pombal: por que o inverno é a melhor época para começar ❄️✨
+
+O laser é feito em várias sessões, com intervalo entre elas. Quem começa agora chega no verão com a pele lisinha e sem estresse. Na primeira visita a gente faz uma avaliação personalizada.
+
+Já fez laser? Conta pra gente 👇
+📲 Agende sua avaliação pelo link da bio.
+
+#depilacaolaser #laserpombal #esteticapombal #depilacaodefinitiva #pombal">Copiar legenda</button></div>
+    <p>Depilação a laser em Pombal: por que o inverno é a melhor época para começar ❄️✨<br><br>O laser é feito em várias sessões, com intervalo entre elas. Quem começa agora chega no verão com a pele lisinha e sem estresse. Na primeira visita a gente faz uma avaliação personalizada.<br><br>Já fez laser? Conta pra gente 👇<br>📲 Agende sua avaliação pelo link da bio.</p>
+    <p class="tags">#depilacaolaser #laserpombal #esteticapombal #depilacaodefinitiva #pombal</p>
+    <p class="kw"><span class="lbl">Palavras-chave</span> depilação a laser Pombal, laser no inverno</p>
+  </div>
+</article>
+<article class="reel papo" id="reel-06" data-sem="2" data-papo="1">
+  <header class="reel-head">
+    <div class="num">#06</div>
+    <div class="head-txt">
+      <p class="eyebrow">Semana 2 · Quinta, 19/11 · Papo de Elas · Ep. 02</p><span class="badge">Papo de Elas</span>
+      <h3>Os erros do começo e o que eles ensinaram</h3>
+      <p class="fmt">Bate-papo sentadas, uma pergunta na tela e as duas respondendo</p>
+    </div>
+  </header>
+  <div class="meta">
+    <div><span class="lbl">Objetivo</span><p>Mostrar vulnerabilidade e aprendizado: o que gera mais conexão no empreendedorismo.</p></div>
+    <div><span class="lbl">Onde gravar</span><p>Cenário fixo do Papo de Elas.</p></div>
+  </div>
+  <h4>Roteiro de fala</h4>
+  <ol class="beats"><li class="beat"><span class="t">0–3s</span><span class="who">ELAINE</span><p class="fala">“Ninguém conta os erros. Hoje a gente vai contar os nossos.”</p><p class="cena">Texto: PAPO DE ELAS • EP. 02</p></li><li class="beat"><span class="t">3–15s</span><span class="who">LUANA</span><p class="fala">“Um erro que a gente cometeu no começo foi [ex.: cobrar barato demais, querer fazer tudo sozinhas, não ter agenda organizada].”</p><p class="cena">Pergunta na tela: QUAL FOI O MAIOR ERRO?</p></li><li class="beat"><span class="t">15–28s</span><span class="who">ELAINE</span><p class="fala">“E o que a gente fez para mudar foi [contem a decisão real: investir em curso, organizar a agenda, ajustar preços].”</p><p class="cena">Close na Elaine</p></li><li class="beat"><span class="t">28–40s</span><span class="who">LUANA</span><p class="fala">“Hoje eu vejo que cada erro foi uma aula. Se fosse começar de novo, eu faria [x] diferente.”</p><p class="cena">As duas</p></li><li class="beat"><span class="t">40–50s</span><span class="who">ELAINE</span><p class="fala">“Errar faz parte. O importante é não desistir.”</p><p class="cena">Texto: ERRAR FAZ PARTE</p></li><li class="beat"><span class="t">50–55s</span><span class="who">AS DUAS</span><p class="fala">“E você, qual erro te ensinou mais? Conta aqui.”</p><p class="cena">As duas sorrindo</p></li></ol>
+  <details>
+    <summary>Dicas de gravação</summary>
+    <ul class="tips"><li>Usem perguntas que chegaram na caixinha dos Stories durante a semana.</li><li>Sejam sinceras: não precisa ser um erro grave, precisa ser verdadeiro.</li><li>Mantenham a mesma capa e o mesmo cenário do Ep. 01.</li><li>No Stories, depois de publicar, abram uma nova caixinha: “Pergunte às Elas”.</li></ul>
+  </details>
+  <div class="caption">
+    <div class="cap-top"><span class="lbl">Legenda com SEO</span>
+      <button type="button" class="copy" id="copy-06" data-text="Papo de Elas • Ep. 02: os erros que cometemos no começo ☕
+
+Empreender não é só acerto. Neste episódio a gente abre o jogo sobre os erros do início da Elas Glow e o que cada um deles ensinou para a gente.
+
+Qual erro mais te ensinou na vida ou no trabalho? Conta aqui 👇
+Toda quinta tem Papo de Elas.
+
+#papodeelas #empreendedorismofeminino #empreender #esteticapombal #elasglow">Copiar legenda</button></div>
+    <p>Papo de Elas • Ep. 02: os erros que cometemos no começo ☕<br><br>Empreender não é só acerto. Neste episódio a gente abre o jogo sobre os erros do início da Elas Glow e o que cada um deles ensinou para a gente.<br><br>Qual erro mais te ensinou na vida ou no trabalho? Conta aqui 👇<br>Toda quinta tem Papo de Elas.</p>
+    <p class="tags">#papodeelas #empreendedorismofeminino #empreender #esteticapombal #elasglow</p>
+    <p class="kw"><span class="lbl">Palavras-chave</span> erros ao empreender, empreendedorismo feminino, estética</p>
+  </div>
+</article>
+<article class="reel" id="reel-07" data-sem="2" data-papo="0">
+  <header class="reel-head">
+    <div class="num">#07</div>
+    <div class="head-txt">
+      <p class="eyebrow">Semana 2 · Sexta, 20/11 · Bronze com fita</p>
+      <h3>Mito ou verdade: bronze com fita</h3>
+      <p class="fmt">Dueto mito ou verdade</p>
+    </div>
+  </header>
+  <div class="meta">
+    <div><span class="lbl">Objetivo</span><p>Reforçar o diferencial de pioneiras no bronze com fita, com as duas interagindo.</p></div>
+    <div><span class="lbl">Onde gravar</span><p>As duas lado a lado, com placas ou gestos de MITO e VERDADE. Fundo do espaço do bronze.</p></div>
+  </div>
+  <h4>Roteiro de fala</h4>
+  <ol class="beats"><li class="beat"><span class="t">0–3s</span><span class="who">ELAINE</span><p class="fala">“A gente foi a primeira a fazer bronze com fita em Pombal. Bora jogar mito ou verdade?”</p><p class="cena">Texto: MITO OU VERDADE? ☀️</p></li><li class="beat"><span class="t">3–8s</span><span class="who">LUANA</span><p class="fala">“Bronze com fita é só para o verão.”</p><p class="cena">Elaine faz sinal de MITO</p></li><li class="beat"><span class="t">8–14s</span><span class="who">ELAINE</span><p class="fala">“Mito! Dá para manter o bronze o ano inteiro, e no inverno ele faz ainda mais diferença na autoestima.”</p><p class="cena">Texto: MITO</p></li><li class="beat"><span class="t">14–18s</span><span class="who">ELAINE</span><p class="fala">“A marquinha fica bem definida.”</p><p class="cena">Luana faz sinal de VERDADE</p></li><li class="beat"><span class="t">18–24s</span><span class="who">LUANA</span><p class="fala">“Verdade! É a fita que deixa aquela marquinha perfeita.”</p><p class="cena">Close da fita saindo. Texto: VERDADE</p></li><li class="beat"><span class="t">24–28s</span><span class="who">AS DUAS</span><p class="fala">“Quer experimentar? Agenda pelo link da bio!”</p><p class="cena">As duas sorrindo</p></li></ol>
+  <details>
+    <summary>Dicas de gravação</summary>
+    <ul class="tips"><li>Brinquem uma com a outra: a interação entre mãe e filha é o que deixa o vídeo único.</li><li>Usem placas impressas em preto e branco (MITO / VERDADE).</li><li>Gravem a fita saindo em câmera lenta para encaixar na resposta.</li><li>Se errarem, continuem: um erro com risada deixa o vídeo mais humano.</li></ul>
+  </details>
+  <div class="caption">
+    <div class="cap-top"><span class="lbl">Legenda com SEO</span>
+      <button type="button" class="copy" id="copy-07" data-text="Bronzeamento com fita em Pombal: mito ou verdade? ☀️
+
+Fomos pioneiras no bronze com fita na cidade e hoje respondemos às dúvidas mais comuns. Spoiler: dá para manter o bronze também no inverno!
+
+Você acertou as duas? Responde nos comentários 👇
+📲 Agende seu momento Glow pelo link da bio.
+
+#bronzeamentocomfita #bronzepombal #marquinha #esteticapombal #pombal">Copiar legenda</button></div>
+    <p>Bronzeamento com fita em Pombal: mito ou verdade? ☀️<br><br>Fomos pioneiras no bronze com fita na cidade e hoje respondemos às dúvidas mais comuns. Spoiler: dá para manter o bronze também no inverno!<br><br>Você acertou as duas? Responde nos comentários 👇<br>📲 Agende seu momento Glow pelo link da bio.</p>
+    <p class="tags">#bronzeamentocomfita #bronzepombal #marquinha #esteticapombal #pombal</p>
+    <p class="kw"><span class="lbl">Palavras-chave</span> bronzeamento com fita Pombal, bronze no inverno, marquinha</p>
+  </div>
+</article>
+<article class="reel" id="reel-08" data-sem="2" data-papo="0">
+  <header class="reel-head">
+    <div class="num">#08</div>
+    <div class="head-txt">
+      <p class="eyebrow">Semana 2 · Domingo, 22/11 · Mãe x filha</p>
+      <h3>Mãe x filha: quem é quem na Elas Glow?</h3>
+      <p class="fmt">Trend de perguntas rápidas: as duas apontam uma para a outra</p>
+    </div>
+  </header>
+  <div class="meta">
+    <div><span class="lbl">Objetivo</span><p>Mostrar a personalidade das duas de forma leve e divertida.</p></div>
+    <div><span class="lbl">Onde gravar</span><p>Lado a lado, plano médio, fundo do espaço. Perguntas aparecem na tela.</p></div>
+  </div>
+  <h4>Roteiro de fala</h4>
+  <ol class="beats"><li class="beat"><span class="t">0–3s</span><span class="who">AS DUAS</span><p class="fala">“Mãe x filha: quem é quem aqui na Elas Glow?”</p><p class="cena">Texto: QUEM É QUEM?</p></li><li class="beat"><span class="t">3–7s</span><span class="who">—</span><p class="fala">“(as duas apontam) Quem chega primeiro?”</p><p class="cena">Pergunta na tela</p></li><li class="beat"><span class="t">7–11s</span><span class="who">—</span><p class="fala">“(as duas apontam) Quem é mais perfeccionista?”</p><p class="cena">Pergunta na tela</p></li><li class="beat"><span class="t">11–15s</span><span class="who">—</span><p class="fala">“(as duas apontam) Quem fala mais com as clientes?”</p><p class="cena">Pergunta na tela</p></li><li class="beat"><span class="t">15–19s</span><span class="who">—</span><p class="fala">“(as duas apontam) Quem teve a ideia do bronze com fita?”</p><p class="cena">Pergunta na tela</p></li><li class="beat"><span class="t">19–24s</span><span class="who">LUANA</span><p class="fala">“No fim, a gente se completa. Comenta qual resposta te surpreendeu!”</p><p class="cena">As duas se abraçando</p></li></ol>
+  <details>
+    <summary>Dicas de gravação</summary>
+    <ul class="tips"><li>Usem um áudio de trend em alta para esse formato.</li><li>Respondam de verdade: discordar e rir no meio deixa o vídeo melhor.</li><li>Escolham perguntas que revelem a rotina e a personalidade de cada uma.</li><li>Ótimo para gerar comentários; respondam todos.</li></ul>
+  </details>
+  <div class="caption">
+    <div class="cap-top"><span class="lbl">Legenda com SEO</span>
+      <button type="button" class="copy" id="copy-08" data-text="Mãe x filha: quem é quem aqui na Elas Glow? 😂🤍
+
+Trabalhar em família tem dessas: cada uma com seu jeito, e no fim a gente se completa.
+
+Qual resposta te surpreendeu? Comenta aqui 👇
+
+#maeefilha #elasglow #esteticapombal #trabalhoemfamilia #pombal">Copiar legenda</button></div>
+    <p>Mãe x filha: quem é quem aqui na Elas Glow? 😂🤍<br><br>Trabalhar em família tem dessas: cada uma com seu jeito, e no fim a gente se completa.<br><br>Qual resposta te surpreendeu? Comenta aqui 👇</p>
+    <p class="tags">#maeefilha #elasglow #esteticapombal #trabalhoemfamilia #pombal</p>
+    <p class="kw"><span class="lbl">Palavras-chave</span> mãe e filha, trabalho em família, Elas Glow</p>
+  </div>
+</article>
+<article class="reel" id="reel-09" data-sem="3" data-papo="0">
+  <header class="reel-head">
+    <div class="num">#09</div>
+    <div class="head-txt">
+      <p class="eyebrow">Semana 3 · Terça, 24/11 · Pele</p>
+      <h3>3 sinais de que sua pele precisa de uma limpeza</h3>
+      <p class="fmt">Dicas para a câmera</p>
+    </div>
+  </header>
+  <div class="meta">
+    <div><span class="lbl">Objetivo</span><p>Educar e gerar identificação, levando ao agendamento da limpeza de pele.</p></div>
+    <div><span class="lbl">Onde gravar</span><p>Ao lado da maca de pele, com luz branca de frente. Plano do peito para cima.</p></div>
+  </div>
+  <h4>Roteiro de fala</h4>
+  <ol class="beats"><li class="beat"><span class="t">0–3s</span><span class="who">QUEM FAZ</span><p class="fala">“Sua pele está pedindo uma limpeza e você nem percebeu.”</p><p class="cena">Texto: SUA PELE ESTÁ PEDINDO AJUDA?</p></li><li class="beat"><span class="t">3–10s</span><span class="who">QUEM FAZ</span><p class="fala">“Sinal número um: os poros parecem mais visíveis e entupidos.”</p><p class="cena">Close de pele (cliente, com autorização)</p></li><li class="beat"><span class="t">10–16s</span><span class="who">QUEM FAZ</span><p class="fala">“Sinal número dois: a pele está opaca, sem aquele brilho saudável.”</p><p class="cena">Texto: PELE SEM BRILHO</p></li><li class="beat"><span class="t">16–22s</span><span class="who">QUEM FAZ</span><p class="fala">“Sinal número três: a maquiagem já não assenta bem como antes.”</p><p class="cena">Texto: MAQUIAGEM QUE NÃO ASSENTA</p></li><li class="beat"><span class="t">22–30s</span><span class="who">QUEM FAZ</span><p class="fala">“Se identificou com algum? Então está na hora de agendar sua limpeza de pele.”</p><p class="cena">Resultado final de uma limpeza</p></li></ol>
+  <details>
+    <summary>Dicas de gravação</summary>
+    <ul class="tips"><li>Intercalem a fala com cenas curtas de uma limpeza real (3 a 4 segundos cada).</li><li>Levantem um dedo a cada sinal para marcar o ritmo.</li><li>Evitem cenas de extração muito explícitas.</li><li>Terminem com a pele iluminada da cliente.</li></ul>
+  </details>
+  <div class="caption">
+    <div class="cap-top"><span class="lbl">Legenda com SEO</span>
+      <button type="button" class="copy" id="copy-09" data-text="Limpeza de pele em Pombal: 3 sinais de que sua pele está pedindo ajuda 🫧
+
+Poros entupidos, pele opaca e maquiagem que não assenta mais? Está na hora de uma limpeza de pele feita sob medida para o seu tipo de pele.
+
+Com qual sinal você se identificou? Comenta 1, 2 ou 3 👇
+💾 Salve e agende pelo link da bio.
+
+#limpezadepele #limpezadepelepombal #esteticapombal #skincare #pombal">Copiar legenda</button></div>
+    <p>Limpeza de pele em Pombal: 3 sinais de que sua pele está pedindo ajuda 🫧<br><br>Poros entupidos, pele opaca e maquiagem que não assenta mais? Está na hora de uma limpeza de pele feita sob medida para o seu tipo de pele.<br><br>Com qual sinal você se identificou? Comenta 1, 2 ou 3 👇<br>💾 Salve e agende pelo link da bio.</p>
+    <p class="tags">#limpezadepele #limpezadepelepombal #esteticapombal #skincare #pombal</p>
+    <p class="kw"><span class="lbl">Palavras-chave</span> limpeza de pele Pombal, sinais limpeza de pele</p>
+  </div>
+</article>
+<article class="reel papo" id="reel-10" data-sem="3" data-papo="1">
+  <header class="reel-head">
+    <div class="num">#10</div>
+    <div class="head-txt">
+      <p class="eyebrow">Semana 3 · Quinta, 26/11 · Papo de Elas · Ep. 03</p><span class="badge">Papo de Elas</span>
+      <h3>Ser pioneiras: como foi apostar no bronze com fita</h3>
+      <p class="fmt">Bate-papo sentadas, uma pergunta na tela e as duas respondendo</p>
+    </div>
+  </header>
+  <div class="meta">
+    <div><span class="lbl">Objetivo</span><p>Mostrar a coragem de inovar e o posicionamento de pioneiras, com a história por trás da decisão.</p></div>
+    <div><span class="lbl">Onde gravar</span><p>Cenário fixo do Papo de Elas.</p></div>
+  </div>
+  <h4>Roteiro de fala</h4>
+  <ol class="beats"><li class="beat"><span class="t">0–3s</span><span class="who">LUANA</span><p class="fala">“Quando a gente trouxe o bronze com fita para Pombal, muita gente nem sabia o que era.”</p><p class="cena">Texto: PAPO DE ELAS • EP. 03</p></li><li class="beat"><span class="t">3–15s</span><span class="who">ELAINE</span><p class="fala">“A ideia surgiu quando [contem como conheceram o bronze com fita e por que acreditaram nele].”</p><p class="cena">Pergunta na tela: POR QUE O BRONZE?</p></li><li class="beat"><span class="t">15–28s</span><span class="who">LUANA</span><p class="fala">“O medo era [ex.: ninguém procurar, investir no equipamento e não ter retorno].”</p><p class="cena">Close na Luana</p></li><li class="beat"><span class="t">28–40s</span><span class="who">ELAINE</span><p class="fala">“Para dar certo, a gente [contem o que fizeram: estudar, divulgar, atender as primeiras clientes].”</p><p class="cena">Cenas do espaço do bronze</p></li><li class="beat"><span class="t">40–50s</span><span class="who">LUANA</span><p class="fala">“Ser a primeira dá medo, mas é aí que a gente cresce.”</p><p class="cena">Texto: CORAGEM DE COMEÇAR</p></li><li class="beat"><span class="t">50–55s</span><span class="who">AS DUAS</span><p class="fala">“Qual ideia você está com medo de tirar do papel? Conta pra gente.”</p><p class="cena">As duas</p></li></ol>
+  <details>
+    <summary>Dicas de gravação</summary>
+    <ul class="tips"><li>Preencham os colchetes com a história real e com detalhes concretos.</li><li>Se tiverem fotos ou vídeos das primeiras clientes do bronze, usem como cobertura.</li><li>Mantenham o mesmo cenário e a mesma capa do quadro.</li><li>Respondam os comentários com áudio ou vídeo: aproxima ainda mais.</li></ul>
+  </details>
+  <div class="caption">
+    <div class="cap-top"><span class="lbl">Legenda com SEO</span>
+      <button type="button" class="copy" id="copy-10" data-text="Papo de Elas • Ep. 03: como foi ser pioneiras no bronze com fita em Pombal ☀️
+
+Trazer algo novo para a cidade dá frio na barriga. Neste episódio a gente conta como surgiu a ideia, os medos que sentimos e o que fizemos para dar certo.
+
+Qual ideia você está com medo de tirar do papel? 👇
+Toda quinta tem Papo de Elas.
+
+#papodeelas #empreendedorismofeminino #bronzeamentocomfita #esteticapombal #elasglow">Copiar legenda</button></div>
+    <p>Papo de Elas • Ep. 03: como foi ser pioneiras no bronze com fita em Pombal ☀️<br><br>Trazer algo novo para a cidade dá frio na barriga. Neste episódio a gente conta como surgiu a ideia, os medos que sentimos e o que fizemos para dar certo.<br><br>Qual ideia você está com medo de tirar do papel? 👇<br>Toda quinta tem Papo de Elas.</p>
+    <p class="tags">#papodeelas #empreendedorismofeminino #bronzeamentocomfita #esteticapombal #elasglow</p>
+    <p class="kw"><span class="lbl">Palavras-chave</span> bronze com fita Pombal, pioneiras, empreender com inovação</p>
+  </div>
+</article>
+<article class="reel" id="reel-11" data-sem="3" data-papo="0">
+  <header class="reel-head">
+    <div class="num">#11</div>
+    <div class="head-txt">
+      <p class="eyebrow">Semana 3 · Sexta, 27/11 · Sobrancelhas</p>
+      <h3>Respondemos às suas perguntas sobre sobrancelhas</h3>
+      <p class="fmt">Respostas às perguntas das seguidoras</p>
+    </div>
+  </header>
+  <div class="meta">
+    <div><span class="lbl">Objetivo</span><p>Criar proximidade respondendo perguntas reais da caixinha dos Stories.</p></div>
+    <div><span class="lbl">Onde gravar</span><p>Sentada, plano fechado. A pergunta aparece na tela (print da caixinha).</p></div>
+  </div>
+  <h4>Roteiro de fala</h4>
+  <ol class="beats"><li class="beat"><span class="t">0–3s</span><span class="who">QUEM FAZ</span><p class="fala">“Vocês perguntaram nos Stories e eu vou responder aqui!”</p><p class="cena">Texto: SUAS PERGUNTAS</p></li><li class="beat"><span class="t">3–11s</span><span class="who">QUEM FAZ</span><p class="fala">““Posso tirar os pelinhos em casa entre as manutenções?” O ideal é não. Deixa crescer para a gente conseguir fazer o desenho certo.”</p><p class="cena">Print da pergunta na tela</p></li><li class="beat"><span class="t">11–19s</span><span class="who">QUEM FAZ</span><p class="fala">““Henna ou só design?” Se você tem falhas ou quer mais definição, a henna ajuda. Se a sobrancelha já é cheia, o design resolve.”</p><p class="cena">Antes e depois com henna</p></li><li class="beat"><span class="t">19–26s</span><span class="who">QUEM FAZ</span><p class="fala">““De quanto em quanto tempo eu volto?” Depende do seu crescimento, mas a cada poucas semanas o formato fica sempre bonito.”</p><p class="cena">Marcação com linha</p></li><li class="beat"><span class="t">26–30s</span><span class="who">QUEM FAZ</span><p class="fala">“Tem mais perguntas? Deixa aqui nos comentários!”</p><p class="cena">Sorriso para a câmera</p></li></ol>
+  <details>
+    <summary>Dicas de gravação</summary>
+    <ul class="tips"><li>Dois dias antes, publiquem nos Stories uma caixinha de perguntas sobre sobrancelhas.</li><li>Usem perguntas reais das seguidoras (sem mostrar o nome de quem perguntou).</li><li>Adaptem as respostas ao jeito que vocês trabalham.</li><li>Esse formato pode se repetir todo mês com outros serviços.</li></ul>
+  </details>
+  <div class="caption">
+    <div class="cap-top"><span class="lbl">Legenda com SEO</span>
+      <button type="button" class="copy" id="copy-11" data-text="Design de sobrancelhas em Pombal: respondemos às suas perguntas ✨
+
+Posso tirar pelinhos em casa? Henna ou só design? De quanto em quanto tempo eu volto? Respondemos às dúvidas que vocês mandaram nos Stories.
+
+Ficou mais alguma? Pergunta aqui 👇
+📲 Agende seu design pelo link da bio.
+
+#designdesobrancelhas #sobrancelhaspombal #hennasobrancelhas #esteticapombal #pombal">Copiar legenda</button></div>
+    <p>Design de sobrancelhas em Pombal: respondemos às suas perguntas ✨<br><br>Posso tirar pelinhos em casa? Henna ou só design? De quanto em quanto tempo eu volto? Respondemos às dúvidas que vocês mandaram nos Stories.<br><br>Ficou mais alguma? Pergunta aqui 👇<br>📲 Agende seu design pelo link da bio.</p>
+    <p class="tags">#designdesobrancelhas #sobrancelhaspombal #hennasobrancelhas #esteticapombal #pombal</p>
+    <p class="kw"><span class="lbl">Palavras-chave</span> design de sobrancelhas Pombal, henna sobrancelhas</p>
+  </div>
+</article>
+<article class="reel" id="reel-12" data-sem="3" data-papo="0">
+  <header class="reel-head">
+    <div class="num">#12</div>
+    <div class="head-txt">
+      <p class="eyebrow">Semana 3 · Domingo, 29/11 · Clientes</p>
+      <h3>A cliente que mais marcou a nossa história</h3>
+      <p class="fmt">As duas contam uma história, com participação da cliente</p>
+    </div>
+  </header>
+  <div class="meta">
+    <div><span class="lbl">Objetivo</span><p>Prova social contada por elas, com emoção e com a cliente participando.</p></div>
+    <div><span class="lbl">Onde gravar</span><p>As duas sentadas no cenário do Papo; depois, a cliente no espaço (com autorização).</p></div>
+  </div>
+  <h4>Roteiro de fala</h4>
+  <ol class="beats"><li class="beat"><span class="t">0–3s</span><span class="who">ELAINE</span><p class="fala">“Tem cliente que vira parte da nossa história. Hoje a gente quer te contar de uma.”</p><p class="cena">Texto: UMA HISTÓRIA QUE NOS MARCOU</p></li><li class="beat"><span class="t">3–14s</span><span class="who">LUANA</span><p class="fala">“A [nome da cliente, com autorização] chegou aqui [contem a situação real: insegura, para um evento especial, primeira vez].”</p><p class="cena">Close na Luana</p></li><li class="beat"><span class="t">14–24s</span><span class="who">ELAINE</span><p class="fala">“Quando ela se olhou no espelho, [contem a reação real].”</p><p class="cena">Foto ou vídeo da cliente</p></li><li class="beat"><span class="t">24–32s</span><span class="who">CLIENTE</span><p class="fala">“(fala curta da cliente) “O que eu mais gosto aqui é…””</p><p class="cena">Cliente falando para a câmera</p></li><li class="beat"><span class="t">32–38s</span><span class="who">AS DUAS</span><p class="fala">“É por isso que a gente faz o que faz. Obrigada a cada cliente que confia na gente.”</p><p class="cena">As duas</p></li></ol>
+  <details>
+    <summary>Dicas de gravação</summary>
+    <ul class="tips"><li>Escolham uma cliente que goste de câmera e peçam autorização por escrito.</li><li>Contem uma história verdadeira, sem exagerar o resultado.</li><li>Deixem o som original da fala da cliente.</li><li>Marquem a cliente no Reels (com permissão): ela tende a compartilhar.</li></ul>
+  </details>
+  <div class="caption">
+    <div class="cap-top"><span class="lbl">Legenda com SEO</span>
+      <button type="button" class="copy" id="copy-12" data-text="A cliente que mais marcou a nossa história 🤍
+
+Cada atendimento na Elas Glow, em Pombal, tem uma história por trás. Hoje a gente quis dividir uma delas e agradecer a cada cliente que confia no nosso trabalho.
+
+Você é cliente da Elas Glow? Deixa um 🤍 aqui!
+
+#depoimento #clientes #esteticapombal #elasglow #pombal">Copiar legenda</button></div>
+    <p>A cliente que mais marcou a nossa história 🤍<br><br>Cada atendimento na Elas Glow, em Pombal, tem uma história por trás. Hoje a gente quis dividir uma delas e agradecer a cada cliente que confia no nosso trabalho.<br><br>Você é cliente da Elas Glow? Deixa um 🤍 aqui!</p>
+    <p class="tags">#depoimento #clientes #esteticapombal #elasglow #pombal</p>
+    <p class="kw"><span class="lbl">Palavras-chave</span> depoimento clínica de estética Pombal, Elas Glow clientes</p>
+  </div>
+</article>
+<article class="reel" id="reel-13" data-sem="4" data-papo="0">
+  <header class="reel-head">
+    <div class="num">#13</div>
+    <div class="head-txt">
+      <p class="eyebrow">Semana 4 · Terça, 01/12 · Todos os serviços</p>
+      <h3>Vem conhecer a Elas Glow com a gente</h3>
+      <p class="fmt">Tour pelo espaço, falando</p>
+    </div>
+  </header>
+  <div class="meta">
+    <div><span class="lbl">Objetivo</span><p>Mostrar o espaço e todos os serviços, com as duas guiando a visita.</p></div>
+    <div><span class="lbl">Onde gravar</span><p>Andando pelo espaço com o celular num estabilizador ou na mão de outra pessoa.</p></div>
+  </div>
+  <h4>Roteiro de fala</h4>
+  <ol class="beats"><li class="beat"><span class="t">0–3s</span><span class="who">LUANA</span><p class="fala">“Vem com a gente, vamos te mostrar a Elas Glow por dentro!”</p><p class="cena">Porta abrindo. Texto: TOUR PELA ELAS GLOW</p></li><li class="beat"><span class="t">3–9s</span><span class="who">ELAINE</span><p class="fala">“Aqui é onde a gente faz as pestanas e as sobrancelhas, com todo cuidado nos detalhes.”</p><p class="cena">Sala de pestanas</p></li><li class="beat"><span class="t">9–15s</span><span class="who">LUANA</span><p class="fala">“Esse é o nosso cantinho do bronze. Fomos as primeiras de Pombal a fazer bronze com fita!”</p><p class="cena">Espaço do bronze</p></li><li class="beat"><span class="t">15–21s</span><span class="who">ELAINE</span><p class="fala">“E aqui a gente faz o laser e os cuidados de pele.”</p><p class="cena">Aparelho de laser e maca</p></li><li class="beat"><span class="t">21–26s</span><span class="who">LUANA</span><p class="fala">“E o mais importante: cada atendimento é só seu, exclusivo e personalizado.”</p><p class="cena">As duas juntas</p></li><li class="beat"><span class="t">26–30s</span><span class="who">AS DUAS</span><p class="fala">“Te esperamos! Agende pelo link da bio.”</p><p class="cena">Tchauzinho para a câmera</p></li></ol>
+  <details>
+    <summary>Dicas de gravação</summary>
+    <ul class="tips"><li>Gravem de manhã, com o espaço arrumado e luz natural.</li><li>Andem devagar e parem em cada ambiente para falar.</li><li>Gravem cada parte algumas vezes e escolham a melhor na edição.</li><li>Bom vídeo para os destaques, como “Conheça o espaço”.</li></ul>
+  </details>
+  <div class="caption">
+    <div class="cap-top"><span class="lbl">Legenda com SEO</span>
+      <button type="button" class="copy" id="copy-13" data-text="Clínica de estética em Pombal: vem conhecer a Elas Glow por dentro ✨
+
+Pestanas, sobrancelhas, bronze com fita, laser e cuidados de pele em um espaço pensado para que cada atendimento seja exclusivo e personalizado.
+
+Qual cantinho você mais gostou? Conta pra gente 👇
+📲 Agendamentos pelo WhatsApp no link da bio.
+
+#esteticapombal #clinicadeestetica #pombal #elasglow #esteticaavancada">Copiar legenda</button></div>
+    <p>Clínica de estética em Pombal: vem conhecer a Elas Glow por dentro ✨<br><br>Pestanas, sobrancelhas, bronze com fita, laser e cuidados de pele em um espaço pensado para que cada atendimento seja exclusivo e personalizado.<br><br>Qual cantinho você mais gostou? Conta pra gente 👇<br>📲 Agendamentos pelo WhatsApp no link da bio.</p>
+    <p class="tags">#esteticapombal #clinicadeestetica #pombal #elasglow #esteticaavancada</p>
+    <p class="kw"><span class="lbl">Palavras-chave</span> clínica de estética Pombal, espaço de estética Pombal</p>
+  </div>
+</article>
+<article class="reel papo" id="reel-14" data-sem="4" data-papo="1">
+  <header class="reel-head">
+    <div class="num">#14</div>
+    <div class="head-txt">
+      <p class="eyebrow">Semana 4 · Quinta, 03/12 · Papo de Elas · Ep. 04</p><span class="badge">Papo de Elas</span>
+      <h3>De esteticistas a formadoras: por que criamos o curso</h3>
+      <p class="fmt">Bate-papo sentadas, uma pergunta na tela e as duas respondendo</p>
+    </div>
+  </header>
+  <div class="meta">
+    <div><span class="lbl">Objetivo</span><p>Mostrar a evolução da carreira (curso de pestanas com certificação IEFP) e fechar o mês olhando para o futuro.</p></div>
+    <div><span class="lbl">Onde gravar</span><p>Cenário fixo do Papo de Elas.</p></div>
+  </div>
+  <h4>Roteiro de fala</h4>
+  <ol class="beats"><li class="beat"><span class="t">0–3s</span><span class="who">ELAINE</span><p class="fala">“Um dia a gente era aluna. Hoje a gente também ensina.”</p><p class="cena">Texto: PAPO DE ELAS • EP. 04</p></li><li class="beat"><span class="t">3–15s</span><span class="who">LUANA</span><p class="fala">“A vontade de criar o curso veio quando [contem o motivo real: pedidos de alunas, vontade de dividir o que aprenderam].”</p><p class="cena">Pergunta na tela: POR QUE ENSINAR?</p></li><li class="beat"><span class="t">15–28s</span><span class="who">ELAINE</span><p class="fala">“Para virar formadora certificada pelo IEFP, a gente [contem o caminho real: estudo, processo, desafios].”</p><p class="cena">Imagens do curso Lash Glow</p></li><li class="beat"><span class="t">28–40s</span><span class="who">LUANA</span><p class="fala">“O que mais me emociona é [ex.: ver uma aluna atendendo a primeira cliente].”</p><p class="cena">Close na Luana</p></li><li class="beat"><span class="t">40–50s</span><span class="who">ELAINE</span><p class="fala">“E o próximo passo da Elas Glow é [contem um sonho ou plano que possam dividir].”</p><p class="cena">As duas</p></li><li class="beat"><span class="t">50–55s</span><span class="who">AS DUAS</span><p class="fala">“Obrigada por acompanhar o Papo de Elas. Que pergunta você quer no próximo?”</p><p class="cena">Texto: MANDE SUA PERGUNTA</p></li></ol>
+  <details>
+    <summary>Dicas de gravação</summary>
+    <ul class="tips"><li>Preencham os colchetes com a história real.</li><li>Falem do curso como parte da história, sem tom de anúncio: a divulgação fica nos Stories.</li><li>Fechem o mês agradecendo a quem acompanhou o quadro.</li><li>Usem as perguntas recebidas para planejar os episódios de dezembro.</li></ul>
+  </details>
+  <div class="caption">
+    <div class="cap-top"><span class="lbl">Legenda com SEO</span>
+      <button type="button" class="copy" id="copy-14" data-text="Papo de Elas • Ep. 04: de esteticistas a formadoras ☕🎓
+
+Um dia a gente foi aluna. Hoje também ensina, com certificação do IEFP. Neste episódio a gente conta por que criou o curso, o caminho até aqui e o que vem pela frente na Elas Glow.
+
+Que pergunta você quer no próximo Papo de Elas? 👇
+
+#papodeelas #empreendedorismofeminino #cursodepestanas #formadora #elasglow">Copiar legenda</button></div>
+    <p>Papo de Elas • Ep. 04: de esteticistas a formadoras ☕🎓<br><br>Um dia a gente foi aluna. Hoje também ensina, com certificação do IEFP. Neste episódio a gente conta por que criou o curso, o caminho até aqui e o que vem pela frente na Elas Glow.<br><br>Que pergunta você quer no próximo Papo de Elas? 👇</p>
+    <p class="tags">#papodeelas #empreendedorismofeminino #cursodepestanas #formadora #elasglow</p>
+    <p class="kw"><span class="lbl">Palavras-chave</span> curso de extensão de pestanas, formadora IEFP, empreendedorismo feminino</p>
+  </div>
+</article>
+<article class="reel" id="reel-15" data-sem="4" data-papo="0">
+  <header class="reel-head">
+    <div class="num">#15</div>
+    <div class="head-txt">
+      <p class="eyebrow">Semana 4 · Sexta, 04/12 · Agenda de fim de ano</p>
+      <h3>Natal e Réveillon: os horários estão acabando</h3>
+      <p class="fmt">Convite das duas para a câmera</p>
+    </div>
+  </header>
+  <div class="meta">
+    <div><span class="lbl">Objetivo</span><p>Transformar a conexão do mês em agendamentos para as festas, com um convite pessoal.</p></div>
+    <div><span class="lbl">Onde gravar</span><p>As duas lado a lado, com um detalhe de Natal discreto ao fundo. Plano médio.</p></div>
+  </div>
+  <h4>Roteiro de fala</h4>
+  <ol class="beats"><li class="beat"><span class="t">0–3s</span><span class="who">ELAINE</span><p class="fala">“Atenção, porque esse aviso é importante!”</p><p class="cena">Texto: AGENDA DE FIM DE ANO 🎄</p></li><li class="beat"><span class="t">3–9s</span><span class="who">LUANA</span><p class="fala">“A agenda para o Natal e o Réveillon já está enchendo.”</p><p class="cena">Print da agenda (sem nomes)</p></li><li class="beat"><span class="t">9–16s</span><span class="who">ELAINE</span><p class="fala">“Pestanas, sobrancelhas, bronze, pele ou laser: escolha o seu e chegue nas festas brilhando.”</p><p class="cena">Cortes rápidos dos serviços</p></li><li class="beat"><span class="t">16–22s</span><span class="who">LUANA</span><p class="fala">“E lembra: quem agenda primeiro escolhe o melhor horário.”</p><p class="cena">Texto: VAGAS LIMITADAS</p></li><li class="beat"><span class="t">22–26s</span><span class="who">AS DUAS</span><p class="fala">“Agende pelo WhatsApp no link da bio. Depois não diz que a gente não avisou!”</p><p class="cena">Piscadinha. Texto: LINK NA BIO</p></li></ol>
+  <details>
+    <summary>Dicas de gravação</summary>
+    <ul class="tips"><li>Energia alta e sorriso: é um convite, não um anúncio.</li><li>Reaproveitem cortes dos Reels anteriores para mostrar os serviços.</li><li>Fixem este Reels no perfil até o fim do ano.</li><li>Respondam rápido quem mandar mensagem depois da publicação.</li></ul>
+  </details>
+  <div class="caption">
+    <div class="cap-top"><span class="lbl">Legenda com SEO</span>
+      <button type="button" class="copy" id="copy-15" data-text="Estética em Pombal: agenda de Natal e Réveillon aberta 🎄✨
+
+Pestanas, sobrancelhas, bronze com fita, limpeza de pele e laser para você chegar nas festas brilhando. Quem agenda primeiro escolhe o melhor horário!
+
+👉 Agende pelo WhatsApp no link da bio.
+Depois não diz que a gente não avisou! 😉
+
+#esteticapombal #natal #reveillon #pombal #elasglow">Copiar legenda</button></div>
+    <p>Estética em Pombal: agenda de Natal e Réveillon aberta 🎄✨<br><br>Pestanas, sobrancelhas, bronze com fita, limpeza de pele e laser para você chegar nas festas brilhando. Quem agenda primeiro escolhe o melhor horário!<br><br>👉 Agende pelo WhatsApp no link da bio.<br>Depois não diz que a gente não avisou! 😉</p>
+    <p class="tags">#esteticapombal #natal #reveillon #pombal #elasglow</p>
+    <p class="kw"><span class="lbl">Palavras-chave</span> estética Pombal Natal, agendamento estética Pombal</p>
+  </div>
+</article></div>
+  </div>
+</section>
+
+<section id="gravacao">
+  <div class="wrap">
+    <h2>Como falar para a câmera</h2>
+    <div class="guide">
+      <div><h3>Falem com uma pessoa</h3><p>Imaginem uma cliente na frente de vocês. Falar “com você” cria conexão; falar “para todos” fica distante.</p></div>
+      <div><h3>Não decorem</h3><p>O roteiro é a ideia. Falem com as palavras de vocês, com naturalidade.</p></div>
+      <div><h3>Frase por frase</h3><p>Gravem uma frase de cada vez e juntem na edição. Fica mais leve.</p></div>
+      <div><h3>Olhar na lente</h3><p>Olhem para a câmera do celular, não para a tela. Um app de teleprompter ajuda.</p></div>
+      <div><h3>Energia um pouco acima</h3><p>A câmera apaga parte da energia. Sorriso e tom um pouco mais animado que o normal.</p></div>
+      <div><h3>Gancho primeiro</h3><p>A primeira frase decide se a pessoa continua. Comecem por ela, sem “oi, gente”.</p></div>
+      <div><h3>História real</h3><p>No Papo de Elas, detalhes concretos (datas, lugares, o que sentiram) prendem mais que frases genéricas.</p></div>
+      <div><h3>Luz e áudio</h3><p>Janela ou ring light de frente; microfone de lapela ou ambiente silencioso.</p></div>
+      <div><h3>SEO da legenda</h3><p>Serviço + Pombal na 1ª linha, localização “Pombal”, até 5 hashtags e uma pergunta no final.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="checklist">
+  <div class="wrap">
+    <h2>Checklist antes de publicar</h2>
+    <p class="sub">As marcações ficam salvas só neste navegador.</p>
+    <ul class="checks"><li><input type="checkbox" id="chk-0"><label for="chk-0">A primeira frase (gancho) é dita logo no início</label></li><li><input type="checkbox" id="chk-1"><label for="chk-1">Olhar na lente e áudio limpo</label></li><li><input type="checkbox" id="chk-2"><label for="chk-2">Legenda na tela em todas as falas</label></li><li><input type="checkbox" id="chk-3"><label for="chk-3">Serviço + Pombal na 1ª linha da legenda e falado no vídeo</label></li><li><input type="checkbox" id="chk-4"><label for="chk-4">Até 5 hashtags e localização “Pombal”</label></li><li><input type="checkbox" id="chk-5"><label for="chk-5">Capa no modelo padrão (preto e branco)</label></li><li><input type="checkbox" id="chk-6"><label for="chk-6">Autorização de imagem das clientes</label></li><li><input type="checkbox" id="chk-7"><label for="chk-7">Responder os comentários na primeira hora</label></li><li><input type="checkbox" id="chk-8"><label for="chk-8">Compartilhar o Reels nos Stories</label></li><li><input type="checkbox" id="chk-9"><label for="chk-9">Papo de Elas: mesmo cenário e mesma capa do quadro</label></li><li><input type="checkbox" id="chk-10"><label for="chk-10">Caixinha “Pergunte às Elas” aberta nos Stories</label></li></ul>
+    <button type="button" class="reset" id="reset-checks">Limpar checklist</button>
+    <p class="note">Antes de gravar, confirmem: o intervalo de manutenção das pestanas e das sobrancelhas, e o protocolo e o número de sessões do laser.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap"><span>Elas Glow · Estética Avançada · Pombal</span><span>Planejamento desenvolvido por Social Media <b>@ruanvictor.digital</b></span></div>
+</footer>
+
+<script>
+(function () {
+  // Filtro por semana
+  var btns = document.querySelectorAll('.filters button');
+  function apply(sem) {
+    btns.forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.sem === sem ? 'true' : 'false'); });
+    document.querySelectorAll('.cal-item, .reel').forEach(function (el) {
+      el.hidden = !(sem === 'all' || (sem === 'papo' ? el.dataset.papo === '1' : el.dataset.sem === sem));
+    });
+  }
+  btns.forEach(function (b) { b.addEventListener('click', function () { apply(b.dataset.sem); }); });
+
+  // Copiar legenda
+  document.querySelectorAll('.copy').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var txt = b.dataset.text;
+      function done(ok) {
+        b.textContent = ok ? 'Copiado' : 'Selecione e copie';
+        b.classList.toggle('ok', ok);
+        setTimeout(function () { b.textContent = 'Copiar legenda'; b.classList.remove('ok'); }, 2000);
+      }
+      function fallback() {
+        var p = b.closest('.caption').querySelector('p:not(.kw)');
+        var r = document.createRange(); r.selectNodeContents(p);
+        var s = window.getSelection(); s.removeAllRanges(); s.addRange(r); done(false);
+      }
+      try { navigator.clipboard.writeText(txt).then(function () { done(true); }, fallback); } catch (e) { fallback(); }
+    });
+  });
+
+  // Checklist guardada no navegador
+  var KEY = 'elasglow-checklist';
+  var boxes = document.querySelectorAll('.checks input');
+  var saved = {};
+  try { saved = JSON.parse(localStorage.getItem(KEY) || '{}'); } catch (e) {}
+  boxes.forEach(function (c) {
+    c.checked = !!saved[c.id];
+    c.addEventListener('change', function () {
+      saved[c.id] = c.checked;
+      try { localStorage.setItem(KEY, JSON.stringify(saved)); } catch (e) {}
+    });
+  });
+  document.getElementById('reset-checks').addEventListener('click', function () {
+    boxes.forEach(function (c) { c.checked = false; }); saved = {};
+    try { localStorage.removeItem(KEY); } catch (e) {}
+  });
+})();
+</script>
+
+</body></html>
